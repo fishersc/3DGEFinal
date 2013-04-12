@@ -6,7 +6,7 @@
 #include "OGLSphericalCamera.h"
 #include "BackForthBehavior.h"
 #include "Material.h"
-
+#include "Astroid.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glutil/glutil.h>
 
@@ -32,12 +32,13 @@ void OGLGameWorld::initialize()
    light.position = glm::vec4(0, 2.5f, 0, 1);
    light.intensity = glm::vec4(0.8f, 0.8f, 0.8f, 1);
 
+
    // 0
    Sphere* ps = new Sphere(glm::vec3(light.position), 0.1f);
    ps->vertexData.setToOneColor(1, 1, 1);
    ps->generateVBO();
    objects.push_back(ps);
-
+	
    // 1
    MyCompositeObject* m = new MyCompositeObject(glm::vec3(0, 1, -5));
    objects.push_back(m);
@@ -54,6 +55,9 @@ void OGLGameWorld::initialize()
    f->vertexData.setToOneColor(f->material.getDiffuse().r, f->material.getDiffuse().g, f->material.getDiffuse().b);
    f->generateVBO();
    objects.push_back(f);
+
+  Astroid* ste = new Astroid(glm::vec3(0, 1, -3));
+	objects.push_back(ste);
 
    Sphere* s = new Sphere(glm::vec3(0, 1.0f, 0));
    s->material.setDiffuse(0, 0, 1); 
@@ -80,7 +84,7 @@ void OGLGameWorld::initialize()
    s1->material.setDiffuse(0.5f, 0.3f, 0.2f); 
    s1->material.setAmbient(0.5f, 0.5f, 0.5f);
    s1->material.setSpecular(0.4f, 0.4f, 0.4f);
-   s1->material.setShininess(10);
+   s1->material.setShininess(1);
    s1->vertexData.setToOneColor(s1->material.getDiffuse().r, s1->material.getDiffuse().g, s1->material.getDiffuse().b);
    s1->generateVBO();
    objects.push_back(s1);
