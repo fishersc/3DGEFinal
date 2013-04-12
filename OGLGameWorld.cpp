@@ -9,6 +9,7 @@
 #include "Astroid.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glutil/glutil.h>
+#include "Laser.h"
 
 OGLGameWorld::OGLGameWorld(OGLGameEngine* gameEngine) : AbstractGameWorld((GameEngine*)gameEngine)
 {
@@ -43,6 +44,8 @@ void OGLGameWorld::initialize()
    MyCompositeObject* m = new MyCompositeObject(glm::vec3(0, 1, -5));
    objects.push_back(m);
 
+   Laser *l = new Laser(glm::vec3(0, 1, -10));
+   objects.push_back(l);
    BackForthBehavior* behave = new BackForthBehavior();
    behave->backPoint = glm::vec3(-9, 1, -5);
    behave->forthPoint = glm::vec3(9, 1, -5);

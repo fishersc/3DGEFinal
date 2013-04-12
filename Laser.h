@@ -4,22 +4,16 @@
 #define MY_COMPOSITE_OBJECT
 #endif
 #include "Cuboid.h"
-
-class Astroid :
+class Laser :
 	public OGLCompositeGameObject
 {
-	public:
-   Cuboid* base;
-   Cuboid* torso;
-   Cuboid* turret;
-     Cuboid* ast;
-	   Cuboid* roid;
+	 Cuboid* laser;
 private:
    float angleY;
    float angleZ, speedZ;
 public:
-	Astroid(const glm::vec3& pos);
-	~Astroid(void);
+	Laser(const glm::vec3& pos);
+	~Laser(void);
 	void update();
    void animate(float dutationMS);
    void render();
