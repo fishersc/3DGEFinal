@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glutil/glutil.h>
 #include "Laser.h"
+#include "SpaceShip.h"
 
 OGLGameWorld::OGLGameWorld(OGLGameEngine* gameEngine) : AbstractGameWorld((GameEngine*)gameEngine)
 {
@@ -44,8 +45,9 @@ void OGLGameWorld::initialize()
    MyCompositeObject* m = new MyCompositeObject(glm::vec3(0, 1, -5));
    objects.push_back(m);
 
-   Laser *l = new Laser(glm::vec3(0, 1, -10));
-   objects.push_back(l);
+   SpaceShip* ship = new SpaceShip();
+   objects.push_back(ship);
+
    BackForthBehavior* behave = new BackForthBehavior();
    behave->backPoint = glm::vec3(-9, 1, -5);
    behave->forthPoint = glm::vec3(9, 1, -5);
