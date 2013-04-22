@@ -4,31 +4,31 @@
 
 Astroid::Astroid(const glm::vec3& pos)
 {
-   base = new Cuboid(pos, 2, 2, 2);
+   base = new Cuboid(pos, 7,7, 7);
    base->material.setDiffuse(1, 1, 1); 
    base->material.setAmbient(0.6f, 0.6f, 0.6f);
    base->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    base->generateVBO();
 
-   ast = new Cuboid(pos, 2, 2, 2);
+   ast = new Cuboid(pos, 7, 7,7);
    ast->material.setDiffuse(1, 1, 1); 
    ast->material.setAmbient(0.6f, 0.6f, 0.6f);
    ast->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    ast->generateVBO();
 
-    roid = new Cuboid(pos, 2, 2, 2);
+    roid = new Cuboid(pos, 7, 7, 7);
    roid->material.setDiffuse(1, 1, 1); 
     roid->material.setAmbient(0.6f, 0.6f, 0.6f);
     roid->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    roid->generateVBO();
 
-   torso = new Cuboid(glm::vec3(0, 0, 0), 2, 2, 2);
+   torso = new Cuboid(glm::vec3(0, 0, 0), 7, 7, 7);
    torso->material.setDiffuse(1, 1, 1); 
    torso->material.setAmbient(0.6f, 0.6f, 0.6f);
    torso->vertexData.setToOneColor(torso->material.getDiffuse().r, torso->material.getDiffuse().g, torso->material.getDiffuse().b);
    torso->generateVBO();
 
-   turret = new Cuboid(glm::vec3(0, 0, 0), 2, 2, 2);
+   turret = new Cuboid(glm::vec3(0, 0, 0), 7, 7, 7);
    turret->material.setDiffuse(1, 1, 1); 
    turret->material.setAmbient(0.6f, 0.6f, 0.6f);
    turret->vertexData.setToOneColor(turret->material.getDiffuse().r, turret->material.getDiffuse().g, turret->material.getDiffuse().b);

@@ -45,7 +45,7 @@ void OGLGameWorld::initialize()
    MyCompositeObject* m = new MyCompositeObject(glm::vec3(0, 1, -5));
    objects.push_back(m);
 
-   SpaceShip* ship = new SpaceShip();
+   SpaceShip* ship = new SpaceShip(glm::vec3(0,2,-5));
    objects.push_back(ship);
 
    BackForthBehavior* behave = new BackForthBehavior();
@@ -61,7 +61,7 @@ void OGLGameWorld::initialize()
    f->generateVBO();
    objects.push_back(f);
 
-  Astroid* ste = new Astroid(glm::vec3(0, 1, -3));
+  Astroid* ste = new Astroid(glm::vec3(10, 3, -20));
 	objects.push_back(ste);
 
    Sphere* s = new Sphere(glm::vec3(0, 1.0f, 0));

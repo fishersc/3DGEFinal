@@ -19,12 +19,16 @@ private:
    float angleY;
    float angleZ, speedZ;
 public:
-	SpaceShip(void);
+	SpaceShip(const glm::vec3& pos);
 	~SpaceShip(void);
 	void update();
    void animate(float dutationMS);
    void render();
 
    virtual void setTransformMatrixUniform(GLuint unif);
+   void setAmbientIntensityUniform(GLuint unif);
+   void setSpecularUniform(GLuint unif);
+   void setShininessUniform(GLuint unif);
+   void setShader(GLuint shader);
 };
 
