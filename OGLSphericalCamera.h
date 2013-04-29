@@ -42,12 +42,7 @@ public:
    virtual void updateTransform();
 
    // Calculates the theta and phi of the spherical coordinates
-   // Params:
-   //    mouseX - on-screen mouse X position
-   //    mouseY - on-screen mouse Y position
-   //    windowWidth - window width (pixels)
-   //    windowHeight - window height (pixels)
-   void changeThetaPhi(int mouseX, int mouseY, int windowWidth, int windowHeight);
+   virtual void changeThetaPhi(float phiRatio, float thetaRatio);
 };
 
 #endif

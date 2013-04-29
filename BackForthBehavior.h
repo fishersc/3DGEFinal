@@ -10,7 +10,6 @@ class BackForthBehavior : public AbstractBehavior
 public:
    enum BackForthState { MOVING_FORTH, MOVING_BACK };
    glm::vec3 forthPoint, backPoint;
-   float speed;
 
 protected:
    BackForthState currentState;

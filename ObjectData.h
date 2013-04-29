@@ -58,6 +58,8 @@ protected:
 
 public:
    ObjectData(void);
+   ObjectData(const ObjectData& copy);
+   const ObjectData& operator=(const ObjectData& rhs);
    ~ObjectData(void);
 
    // Returns the size in bytes
@@ -79,7 +81,6 @@ public:
    inline int getCount() const { return count; }
 
    // Returns the number of vertices
-   //inline int getNumberOfVertices() const { return ((count / STORED_TYPE_COUNT) / componentCount[POSITION]); }
    inline int getNumberOfVertices() const { return (count / (componentCount[POSITION]+componentCount[COLOR]+componentCount[NORMAL])); }
 
    // Returns the component count of a stored type
@@ -118,6 +119,9 @@ public:
 
    void consoleDump() const;
 
+private:
+
+   void copy(const ObjectData& rhs);
 };
 
 #endif

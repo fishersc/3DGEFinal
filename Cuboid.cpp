@@ -1,5 +1,5 @@
 #include "Cuboid.h"
-#include "ShapeGenerator.h"
+#include "ObjectGenerator.h"
 #include <cstdlib>
 #include <time.h> 
 #include <iostream>
@@ -27,15 +27,7 @@ void Cuboid::generate()
    vertexData.setColorComponents(4, 16, 44);
    vertexData.setNormalComponents(3, 32, 44);
    vertexData.setPrimitive(ObjectData::TRIANGLES);
-   float* data = ShapeGenerator::generateCuboid(width, height, depth);
+   float* data = ObjectGenerator::generateCuboid(width, height, depth);
    vertexData.setData(data);
    delete [] data;
-}
-
-void Cuboid::update()
-{
-}
-
-void Cuboid::animate(float durationMS)
-{
 }

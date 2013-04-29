@@ -1,4 +1,4 @@
-#version 130
+#version 140
 
 precision highp float;
 
@@ -27,16 +27,18 @@ void main()
 	vec4 positionWorldSpace = localToWorldMatrix * position;
 	gl_Position = cameraToClipMatrix * worldToCameraMatrix * positionWorldSpace;
 
-	fragNormal = mat3(localToWorldMatrix) * vertexNormal;
-	vec3 unitNormal = normalize(fragNormal);
+	fragColor = vertexColor;
+
+	vec3 fNormal = mat3(localToWorldMatrix) * vertexNormal;
+	vec3 unitNormal = normalize(fNormal);
 	vec3 toLightDir = normalize(worldGlobalLightPos);
 	float cosAngIncidence = dot(unitNormal, toLightDir);
-	cosAngIncidence = clamp(cosAngIncidence, 0.0, 1.0);
-
-	fragLightPosition = vec3(worldLightPos);
-	fragColor = vertexColor;
-	fragGlobalColor = vertexColor * globalLightIntensity * cosAngIncidence;
+	cosAngIncidence = clamp(cosAngIncidence, 0.0f, 1.0f); 
+	
+	fragGlobalColor = fragColor * globalLightIntensity * cosAngIncidence;
+	fragNormal = fNormal;
 	fragPosition = vec3(positionWorldSpace);
+	fragLightPosition = vec3(worldLightPos);
 	fragGlobalLightPosition = worldGlobalLightPos;
 	fragCameraPosition = worldCameraPos;
 }

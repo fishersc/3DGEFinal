@@ -1,5 +1,6 @@
 #include "MyCompositeObject.h"
 #include "AbstractBehavior.h"
+#include "BoundingBox.h"
 
 MyCompositeObject::MyCompositeObject(const glm::vec3& pos)
 {
@@ -34,10 +35,15 @@ MyCompositeObject::~MyCompositeObject(void)
    delete turret;
 }
 
+BoundingBox MyCompositeObject::getOrientedBoundingBox()
+{
+   return OGLGameObject::getOrientedBoundingBox(3.0f, 4.0f, 3.0f);
+}
+
 void MyCompositeObject::update()
 {
-   if(base->behavior){
-      base->behavior->updateState();
+   if(behavior){
+      behavior->updateState();
    }
 }
 
@@ -52,11 +58,12 @@ void MyCompositeObject::animate(float durationMS)
    else if(angleZ < -45){
       speedZ = 60;
    }
-
    
-   if(base->behavior){
-      base->behavior->animate(durationMS);
+   if(behavior){
+      behavior->animate(durationMS);
    }
+
+   base->frame = frame;
 } 
 
 void MyCompositeObject::setTransformMatrixUniform(GLuint unif)
@@ -96,7 +103,7 @@ void MyCompositeObject::setShader(GLuint shader)
 
 void MyCompositeObject::render()
 {
-   frameStack.setBaseFrame(base->frame);
+   frameStack.setBaseFrame(frame);
    base->render();
    frameStack.push();
    {

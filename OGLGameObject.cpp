@@ -1,11 +1,24 @@
 #include "OGLGameObject.h"
 #include "AbstractBehavior.h"
+#include "BoundingBox.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 OGLGameObject::OGLGameObject(void)
 {
    shader = 0;
+}
+
+OGLGameObject::OGLGameObject(const OGLGameObject& copy) : AbstractGameObject(copy)
+{
+   vboID = copy.vboID;
+   transformMatrixUnif = copy.transformMatrixUnif;
+   ambientIntensityUnif = copy.ambientIntensityUnif;
+   normTransformMatrixUnif = copy.normTransformMatrixUnif;
+   specularUnif = copy.specularUnif;
+   shininessUnif = copy.shininessUnif;
+   shader = copy.shader;
 }
 
 OGLGameObject::~OGLGameObject(void)
@@ -41,6 +54,23 @@ void OGLGameObject::setSpecularUniform(GLuint unif)
 void OGLGameObject::setShininessUniform(GLuint unif)
 {
    shininessUnif = unif;
+}
+
+BoundingBox OGLGameObject::getOrientedBoundingBox(float width, float height, float depth)
+{
+   BoundingBox b;
+   b.use = useBoundingBox;
+   if(!b.use) return b;
+
+   b.set(width, height, depth);
+   b.orientation = frame.orientation;
+
+   return b;
+}
+
+BoundingBox OGLGameObject::getOrientedBoundingBox()
+{
+   return getOrientedBoundingBox(0, 0, 0);
 }
 
 void OGLGameObject::render()
@@ -84,15 +114,17 @@ void OGLGameObject::render(const ReferenceFrame& frame)
 		(void*)vertexData.getStartingOffset(ObjectData::COLOR)
 	);
    // Normals
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(
-		2,
-		vertexData.getComponentCount(ObjectData::NORMAL),
-		GL_FLOAT,                  
-		GL_FALSE,
-		vertexData.getStride(ObjectData::NORMAL), 
-		(void*)vertexData.getStartingOffset(ObjectData::NORMAL)
-	);
+   if(vertexData.getComponentCount(ObjectData::NORMAL) > 0){
+	   glEnableVertexAttribArray(2);
+	   glVertexAttribPointer(
+		   2,
+		   vertexData.getComponentCount(ObjectData::NORMAL),
+		   GL_FLOAT,                  
+		   GL_FALSE,
+		   vertexData.getStride(ObjectData::NORMAL), 
+		   (void*)vertexData.getStartingOffset(ObjectData::NORMAL)
+	   );
+   }
 
    switch(vertexData.getPrimitive()){
       case ObjectData::TRIANGLES:{

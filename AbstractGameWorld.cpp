@@ -12,8 +12,8 @@ AbstractGameWorld::AbstractGameWorld(GameEngine* gameEngine)
 
 AbstractGameWorld::~AbstractGameWorld(void)
 {
-   std::vector<AbstractGameObject*>::iterator io;
+   std::map<string, AbstractGameObject*>::iterator io;
    for(io = objects.begin(); io != objects.end(); io++){
-      delete *io;
+      delete (*io).second;
    }
 }

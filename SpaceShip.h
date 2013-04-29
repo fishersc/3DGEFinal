@@ -15,6 +15,7 @@ class SpaceShip :
    Pyramid* cockpit1;
    Pyramid* thruster1;
    Pyramid* thruster2;
+   glm::vec3 gun;
 private:
    float angleY;
    float angleZ, speedZ;

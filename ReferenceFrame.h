@@ -18,6 +18,9 @@ public:
 public:
    // Constructor
    ReferenceFrame(void);
+   ReferenceFrame(const ReferenceFrame& copy);
+
+   const ReferenceFrame& operator=(const ReferenceFrame& copy);
 
    // Destructor
    ~ReferenceFrame(void);

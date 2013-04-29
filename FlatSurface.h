@@ -14,6 +14,9 @@ public:
    FlatSurface(float width=1, float depth=1, int rows=1, int cols=1);
    virtual ~FlatSurface(void);
 
+   inline float getWidth() const { return width; }
+   inline float getDepth() const { return depth; }
+
    void update() {}
    void animate(float durationMS) {}
 

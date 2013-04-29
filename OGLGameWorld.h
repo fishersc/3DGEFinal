@@ -3,7 +3,6 @@
 #define OGL_GAME_WORLD_H
 
 #include "AbstractGameWorld.h"
-#include "PointLight.h"
 #include "OGLShaderManager.h"
 
 #include <GL\glew.h>
@@ -20,11 +19,7 @@ protected:
 
    glm::vec4 lightDirection;
 
-   PointLight light;
-
    OGLShaderManager shaderMan;
-
-   float lightSpeed;
 
    float zNear; 
 
@@ -38,8 +33,16 @@ public:
    virtual void update();
    virtual void animate(float durationMS);
    virtual void render();
-   virtual void updateCamera();
-   virtual void updateViewport(float aspectRatio);
+
+   virtual void updateViewport(float aspectRatio) {}
+   virtual void updateCamera() {}
+   virtual void setupShaders() {}
+   virtual void setupLights() {}
+
+protected:
+   virtual void createGameObjects() = 0;
+
+   virtual void checkForCollisions();
 };
 
 #endif

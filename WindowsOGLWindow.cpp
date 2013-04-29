@@ -26,9 +26,11 @@ WindowsOGLWindow::~WindowsOGLWindow(void)
 {
 	if(hdc != NULL){
 		wglMakeCurrent(hdc, 0); // Remove the rendering context from the device context
-	//	wglDeleteContext(hrc);  // Delete our rendering context
+		wglDeleteContext(hrc);  // Delete our rendering context
 		ReleaseDC(hWnd, hdc);   // Release the device context from the window
 	}
+   ShowCursor(TRUE);
+   ClipCursor(0); // Free the cursor
 }
 
 bool WindowsOGLWindow::create()
@@ -82,6 +84,8 @@ bool WindowsOGLWindow::create()
 	glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // Get back the OpenGL MAJOR version we are using
 	glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // Get back the OpenGL MINOR version we are using
 
+   //ShowCursor(FALSE);
+
 	return true; // We have successfully created a context
 }
 
@@ -114,10 +118,11 @@ void WindowsOGLWindow::processEvents()
 LRESULT CALLBACK WindowsOGLWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
-	case WM_SIZE: 
+	case WM_SIZE:{ 
 		// If our window is resizing send the new window size to our OpenGL window
 		self->updateOGLViewportsize(LOWORD(lParam), HIWORD(lParam)); 
 		break;
+   }
    case WM_KEYDOWN:
       self->gameEngine->inputSystem.keys[wParam] = true;
       return 0;
@@ -125,26 +130,20 @@ LRESULT CALLBACK WindowsOGLWindow::WndProc(HWND hWnd, UINT message, WPARAM wPara
       self->gameEngine->inputSystem.keys[wParam] = false;
       return 0;
    case WM_LBUTTONDOWN:
-      break;
+      self->gameEngine->inputSystem.leftMouseButton = true;
+      return 0;
    case WM_RBUTTONDOWN:
-      break;
+      self->gameEngine->inputSystem.rightMouseButton = true;
+      return 0;
    case WM_LBUTTONUP:
-      break;
-   case WM_MOUSEMOVE:
-      self->gameEngine->inputSystem.mouseX = LOWORD(lParam);
-      self->gameEngine->inputSystem.mouseY = HIWORD(lParam);
-      //if(self->gameEngine->inputSystem.mouseX < 2){
-      //   BlockInput(true);
-      //   SetCursorPos(self->gameEngine->windowWidth-2, self->gameEngine->inputSystem.mouseY);
-      //   BlockInput(false);
-      //}
-      //else if(self->gameEngine->inputSystem.mouseX > self->gameEngine->windowWidth-2){
-      //   BlockInput(true);
-      //   SetCursorPos(2, self->gameEngine->inputSystem.mouseY);
-      //   BlockInput(false);
-      //}
-      break;
+      self->gameEngine->inputSystem.leftMouseButton = false;
+      return 0;
    case WM_RBUTTONUP:
+      self->gameEngine->inputSystem.rightMouseButton = false;
+      return 0;
+   case WM_MOUSEMOVE:
+      self->gameEngine->inputSystem.moveMouse(LOWORD(lParam), HIWORD(lParam));
+      //std::cout << self->gameEngine->inputSystem.mouseX << ", " << self->gameEngine->inputSystem.mouseY << std::endl;
       break;
 	}
 
@@ -185,5 +184,6 @@ void WindowsOGLWindow::updateOGLViewportsize(int w, int h)
 	height = h; // Set the window height
    gameEngine->windowWidth = width;
    gameEngine->windowHeight = height;
+   gameEngine->inputSystem.setMaxMouse(width, height);
 	gameEngine->setAspectRatio(width / (float)height);
 }

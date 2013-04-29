@@ -1,5 +1,5 @@
 #include "Sphere.h"
-#include "ShapeGenerator.h"
+#include "ObjectGenerator.h"
 
 Sphere::Sphere(const glm::vec3& position, float radius, int slices, int stacks)
 {
@@ -18,7 +18,7 @@ Sphere::~Sphere(void)
 
 void Sphere::generate()
 {
-   float* data = ShapeGenerator::generateSphere(radius, slices, stacks);
+   float* data = ObjectGenerator::generateSphere(radius, slices, stacks);
    // The first position in data has the number of vertices, each vertex has 11 components
    vertexData.setCount((int)data[0] * 11);
    vertexData.setPositionComponents(4, 0, 44);

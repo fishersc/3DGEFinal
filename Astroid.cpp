@@ -4,33 +4,38 @@
 
 Astroid::Astroid(const glm::vec3& pos)
 {
-   base = new Cuboid(pos, 7,7, 7);
+   base = new Cuboid(pos, 5,5, 5);
    base->material.setDiffuse(1, 1, 1); 
-   base->material.setAmbient(0.6f, 0.6f, 0.6f);
+   base->material.setAmbient(224, 223, 219);
+   base->material.setShininess(1.0);
    base->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    base->generateVBO();
 
-   ast = new Cuboid(pos, 7, 7,7);
+   ast = new Cuboid(pos, 5, 5,5);
    ast->material.setDiffuse(1, 1, 1); 
-   ast->material.setAmbient(0.6f, 0.6f, 0.6f);
+   ast->material.setAmbient(224, 223, 219);
+   ast->material.setShininess(1.0);
    ast->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    ast->generateVBO();
 
-    roid = new Cuboid(pos, 7, 7, 7);
+    roid = new Cuboid(pos, 5, 5, 5);
    roid->material.setDiffuse(1, 1, 1); 
-    roid->material.setAmbient(0.6f, 0.6f, 0.6f);
-    roid->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
+    roid->material.setAmbient(224, 223, 219);
+	roid->material.setShininess(1.0);
+	roid->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    roid->generateVBO();
 
-   torso = new Cuboid(glm::vec3(0, 0, 0), 7, 7, 7);
+   torso = new Cuboid(glm::vec3(0, 0, 0), 5, 5, 5);
    torso->material.setDiffuse(1, 1, 1); 
-   torso->material.setAmbient(0.6f, 0.6f, 0.6f);
+   torso->material.setAmbient(224, 223, 219);
+   torso->material.setShininess(1.0);
    torso->vertexData.setToOneColor(torso->material.getDiffuse().r, torso->material.getDiffuse().g, torso->material.getDiffuse().b);
    torso->generateVBO();
 
-   turret = new Cuboid(glm::vec3(0, 0, 0), 7, 7, 7);
+   turret = new Cuboid(glm::vec3(0, 0, 0), 5, 5, 5);
    turret->material.setDiffuse(1, 1, 1); 
-   turret->material.setAmbient(0.6f, 0.6f, 0.6f);
+   turret->material.setAmbient(224, 223, 219);
+   turret->material.setShininess(1.0);
    turret->vertexData.setToOneColor(turret->material.getDiffuse().r, turret->material.getDiffuse().g, turret->material.getDiffuse().b);
    turret->generateVBO();
 

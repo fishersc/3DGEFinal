@@ -1,5 +1,6 @@
 #include "FlatSurface.h"
-#include "ShapeGenerator.h"
+#include "ObjectGenerator.h"
+#include "BoundingBox.h"
 
 FlatSurface::FlatSurface(float width, float depth, int rows, int cols)
 {
@@ -23,7 +24,7 @@ FlatSurface::~FlatSurface(void)
 
 void FlatSurface::generate()
 {
-   float* data = ShapeGenerator::generateFlatSurface(width, depth, rows, cols);
+   float* data = ObjectGenerator::generateFlatSurface(width, depth, rows, cols);
    // The first position in data has the number of elements
    vertexData.setCount((int)data[0]);
    vertexData.setPositionComponents(4, 0, 44);
@@ -34,4 +35,5 @@ void FlatSurface::generate()
    vertexData.setData(data+1); // Skip the first index
    delete [] data;
 }
+
 

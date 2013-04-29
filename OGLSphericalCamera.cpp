@@ -11,11 +11,12 @@ OGLSphericalCamera::~OGLSphericalCamera(void)
 {
 }
 
-void OGLSphericalCamera::changeThetaPhi(int mouseX, int mouseY, int windowWidth, int windowHeight)
+void OGLSphericalCamera::changeThetaPhi(float phiRatio, float thetaRatio)
 {
    // Putting the mouse pointer at the center of the screen will point down the Z-axis
-   cameraPosSpherical.phi = ((mouseX / (float)windowWidth) * 360 - 180) + 90;
-   cameraPosSpherical.theta = (mouseY / (float)windowHeight) * 160 - 80;
+   cameraPosSpherical.phi = ((phiRatio * 360.0f) - 180.0f) + 90.0f;
+
+   cameraPosSpherical.theta = (thetaRatio * 160) - 80.0f;
 }
 
 void OGLSphericalCamera::animate()

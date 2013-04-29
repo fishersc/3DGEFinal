@@ -1,27 +1,25 @@
 #pragma once
-#include "oglcompositegameobject.h"
 #ifndef MY_COMPOSITE_OBJECT
 #define MY_COMPOSITE_OBJECT
 #endif
 #include "Cuboid.h"
+#include <string>
+
+#include <glm\glm.hpp>
 class Laser :
-	public OGLCompositeGameObject
+	public Cuboid
 {
 	 Cuboid* laser;
 private:
    float angleY;
    float angleZ, speedZ;
 public:
-	Laser(const glm::vec3& pos);
+	string name;
+	glm::vec3 startPos;
+	float totalTime;
+	Laser(float speed);
 	~Laser(void);
-	void update();
    void animate(float dutationMS);
-   void render();
-
-   void setTransformMatrixUniform(GLuint unif);
-   void setAmbientIntensityUniform(GLuint unif);
-   void setSpecularUniform(GLuint unif);
-   void setShininessUniform(GLuint unif);
-   void setShader(GLuint shader);
+   void fire(const glm::vec3& position, const ReferenceFrame& frame);
 };
 

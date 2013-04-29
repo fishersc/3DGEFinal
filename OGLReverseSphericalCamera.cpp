@@ -1,6 +1,8 @@
 #include "OGLReverseSphericalCamera.h"
 #include "OGLUtil.h"
 
+#include <iostream>
+
 OGLReverseSphericalCamera::OGLReverseSphericalCamera(void)
 {
 }
@@ -8,6 +10,12 @@ OGLReverseSphericalCamera::OGLReverseSphericalCamera(void)
 
 OGLReverseSphericalCamera::~OGLReverseSphericalCamera(void)
 {
+}
+
+void OGLReverseSphericalCamera::changeThetaPhi(float phiRatio, float thetaRatio)
+{
+   cameraPosSpherical.phi = (phiRatio * 360.0f) - 90.0f;
+   cameraPosSpherical.theta = (thetaRatio * 160) - 80.0f;
 }
 
 void OGLReverseSphericalCamera::animate()
@@ -26,7 +34,7 @@ void OGLReverseSphericalCamera::animate()
    float fCosPhi = cosf(phi);
    float fSinPhi = sinf(phi);
     
-   glm::vec3 dirToTarget(fSinTheta * fCosPhi, fCosTheta, fSinTheta * fSinPhi);
+   glm::vec3 dirToTarget(fSinTheta * fCosPhi, -fCosTheta, fSinTheta * fSinPhi);
    cameraTarget = (dirToTarget * cameraPosSpherical.rho) + position;
 
    lookDir = glm::normalize(position - cameraTarget);

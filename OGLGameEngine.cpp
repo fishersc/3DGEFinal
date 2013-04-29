@@ -3,15 +3,19 @@
 #include "OGLSphericalCamera.h"
 #include "OGLReverseSphericalCamera.h"
 #include "OGLGameWorld.h"
+#include "MyWorld.h"
 
 #include <iostream>
 
 OGLGameEngine::OGLGameEngine(void)
 {
-   gameWorld = new OGLGameWorld(this);
+   gameWorld = new MyWorld(this);
    camera = new OGLSphericalCamera();
    camera2 = new OGLReverseSphericalCamera();
-   theCamera = (OGLSphericalCamera*)camera;
+   theCamera = (OGLReverseSphericalCamera*)camera2;
+   theCamera->position.x = 0;
+   theCamera->position.y = 5;
+   theCamera->position.z = 5;
 }
 
 OGLGameEngine::~OGLGameEngine(void)
@@ -24,75 +28,65 @@ void OGLGameEngine::initialize()
 {
    theCamera->cameraPosSpherical.phi = 0.0f;  
    theCamera->cameraPosSpherical.theta = 0.0f;  
-   theCamera->cameraPosSpherical.rho = 20.0f;  
+   theCamera->cameraPosSpherical.rho = 0.1f;  
 
    theCamera->cameraTarget.x = 0;
    theCamera->cameraTarget.y = 0;
    theCamera->cameraTarget.z = 0;
 
-	//object.makeResources();
    gameWorld->initialize();
 }
 
 void OGLGameEngine::setAspectRatio(float aspectRatio)
 {
-	//object.reshapeViewport(aspectRatio);
    gameWorld->updateViewport(aspectRatio);
 }
 
 void OGLGameEngine::gameLogic(float tickTimeMS)
 {
    gameWorld->update();
-   //object.update(tickTimeMS);
    gameWorld->animate(tickTimeMS);
 }
 
 void OGLGameEngine::gamePresentation()
 {
-   //object.render();
    gameWorld->render();
 }
 
 void OGLGameEngine::playerUpdate(float tickTimeMS)
 {
    if(inputSystem.keys['1']){ 
-      theCamera = (OGLSphericalCamera*)camera;
-      theCamera->cameraTarget.x = 0;
-      theCamera->cameraTarget.y = 0;
-      theCamera->cameraTarget.z = 0;
+      gameWorld->doWorldEvent(1, tickTimeMS);
       inputSystem.keys['1'] = false;
    }else if(inputSystem.keys['2']){
-      camera2->position = theCamera->position;
-      theCamera = (OGLReverseSphericalCamera*)camera2;
-      cameraUpdate();
+      gameWorld->doWorldEvent(2, tickTimeMS);
       inputSystem.keys['2'] = false;
    }else if(inputSystem.keys['3']){
-      theCamera->cameraPosSpherical.theta += 10.0f;  
-      if(theCamera->cameraPosSpherical.theta > 80) theCamera->cameraPosSpherical.theta = 80;
+      gameWorld->doWorldEvent(3, tickTimeMS);
       inputSystem.keys['3'] = false;
-   }else if(inputSystem.keys['6']){
-      theCamera->cameraPosSpherical.rho -= 0.5f;  
-      if(theCamera->cameraPosSpherical.rho < 1) theCamera->cameraPosSpherical.rho = 1;
-      inputSystem.keys['6'] = false;
    }else if(inputSystem.keys[VK_UP]){
-      if(theCamera == camera2){
-         theCamera->position += (theCamera->lookDir * 1.0f * tickTimeMS/1000.0f);
-      }
+      gameWorld->doWorldEvent(100, tickTimeMS);
+      inputSystem.keys[VK_UP] = false;
    }else if(inputSystem.keys[VK_DOWN]){
-      if(theCamera == camera2){
-         theCamera->position -= (theCamera->lookDir * 1.0f * tickTimeMS/1000.0f);
-      }
+      gameWorld->doWorldEvent(101, tickTimeMS);
+      inputSystem.keys[VK_UP] = false;
+   }
+	else if(inputSystem.keys[VK_SPACE])
+   {
+	   gameWorld->doWorldEvent(300, tickTimeMS);
+	   inputSystem.keys[VK_SPACE] = false;
+
    }else if(inputSystem.keys[VK_ESCAPE]){
       setGameOver();
    }
+   
 }
 
 void OGLGameEngine::cameraUpdate()
 {
-   theCamera->changeThetaPhi(inputSystem.mouseX, inputSystem.mouseY, windowWidth, windowHeight);
+   theCamera->changeThetaPhi(inputSystem.getMouseXRatio(), inputSystem.getMouseYRatio());
    theCamera->animate();
    theCamera->updateTransform();
-   //object.updateCamera(theCamera);
    gameWorld->updateCamera();
 }
 

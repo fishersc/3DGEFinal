@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
    srand((unsigned int)time(NULL)); // Random seed
 
 	GameEngine* gameEngine = new OGLGameEngine();
-	GameApplication app(gameEngine, new WindowsOGLWindow(L"Lighting the World", (OGLGameEngine*)gameEngine));
+	GameApplication app(gameEngine, new WindowsOGLWindow(L"World with Oriented Bounding Boxes (OBB)", (OGLGameEngine*)gameEngine));
 	
 	app.run();
 

@@ -24,3 +24,4 @@ void Pyramid::animate(float durationMS)
    frame.orientation[1].x = -sinRad;
    frame.orientation[1].y = cosRad;
 }
+

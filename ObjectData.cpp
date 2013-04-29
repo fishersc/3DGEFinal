@@ -22,6 +22,34 @@ ObjectData::ObjectData(void)
    primitive = TRIANGLES;
 }
 
+ObjectData::ObjectData(const ObjectData& cpy)
+{
+   copy(cpy);
+}
+
+const ObjectData& ObjectData::operator=(const ObjectData& rhs)
+{
+   if(this != &rhs){
+      copy(rhs);
+   }
+   return *this;
+}
+
+void ObjectData::copy(const ObjectData& rhs)
+{
+   index = rhs.index;
+   colorIndex = rhs.colorIndex;
+   normalIndex = rhs.normalIndex;
+   setCount(rhs.count);
+   componentCount[POSITION] = rhs.componentCount[POSITION];
+   componentCount[COLOR] = rhs.componentCount[COLOR];
+   startingOffset[POSITION] = rhs.startingOffset[POSITION];
+   startingOffset[COLOR] = rhs.startingOffset[COLOR];
+   stride[POSITION] = rhs.stride[POSITION];
+   stride[COLOR] = rhs.stride[COLOR];
+   primitive = rhs.primitive;
+   setData(rhs.data);
+}
 
 ObjectData::~ObjectData(void)
 {
@@ -67,9 +95,12 @@ void ObjectData::readFromFile(std::string filename)
    // The file's content as a collection of floats
 	std::vector<int> headers;
 
-   // Read the header data.  There are 8 things to read: <count>,<position component count>,<position offset>,
-   // <position stride>,<color component count>,<color offset>,<color stride>,<primitive>
-   const int HEADER_COUNT = 8;
+   // Read the header data.  
+   // There are 11 things to read: 
+   // <count>,<position component count>,<position offset>,<position stride>,
+   // <color component count>,<color offset>,<color stride>,
+   // <normal component count>,<normal offset>,<normal stride>,<primitive>
+   const int HEADER_COUNT = 11;
    int i = 0;
 	while(i < HEADER_COUNT){
       if(fin.good()){
@@ -84,9 +115,9 @@ void ObjectData::readFromFile(std::string filename)
 	} // EndWhile i < HEADER_COUNT
 
    if(headers.size() != HEADER_COUNT){
-      std::cerr << "Expected 8 csv: <count>,<position component count>" 
+      std::cerr << "Expected 11 csv: <count>,<position component count>" 
          << ",<position offset>,<position stride>,<color component count>" 
-         << ",<color offset>,<color stride>,<primitive>," << std::endl;
+         << ",<color offset>,<color stride>,<normal component count>,<normal offset>,<normal stride>,<primitive>," << std::endl;
       fin.close();
       return;
    }
@@ -98,7 +129,10 @@ void ObjectData::readFromFile(std::string filename)
    componentCount[COLOR] = headers[4];
    startingOffset[COLOR] = headers[5];
    stride[COLOR] = headers[6];
-   primitive = (DrawPrimitive)headers[7];
+   componentCount[NORMAL] = headers[7];
+   startingOffset[NORMAL] = headers[8];
+   stride[NORMAL] = headers[9];
+   primitive = (DrawPrimitive)headers[10];
 
 	std::vector<float> values;
    
@@ -258,6 +292,16 @@ void ObjectData::setToOneColor(float r, float g, float b, float a)
 
 void ObjectData::consoleDump() const
 {
+   int c = 0;
+   for(int i = 0; i < count; i++){
+      if(c == 0 || c == 4 || c == 8){
+         std::cout << std::endl;
+      }
+		std::cout << data[i] << ", ";
+      if(++c == 11) c = 0;
+	}
+   std::cout << std::endl;
+
    std::cout << "Count : " << count << std::endl << 
       "Components (position) " << componentCount[POSITION] << std::endl <<
       "Components (color) " << componentCount[COLOR] << std::endl <<
@@ -269,16 +313,8 @@ void ObjectData::consoleDump() const
       "Stride (color) " << stride[COLOR] << std::endl <<
       "Stride (normal) " << stride[NORMAL] << std::endl <<
       "Primitive " << primitive << std::endl <<
-      "Vertex Count " << getNumberOfVertices() << 
+      "Vertex Count " << getNumberOfVertices() << std::endl <<
       "Size in bytes " << sizeInBytes() << std::endl;
 
-   int c = 0;
-   for(int i = 0; i < count; i++){
-      if(c == 0 || c == 4 || c == 8){
-         std::cout << std::endl;
-      }
-		std::cout << data[i] << ", ";
-      if(++c == 11) c = 0;
-	}
    std::cout << std::endl;
 }

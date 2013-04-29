@@ -7,11 +7,8 @@
 class Axis : public OGLGameObject
 {
 public:
-   Axis(void);
+   Axis(float length = 1);
    virtual ~Axis(void);
-
-   void update() {}
-   void animate(float durationMS) {} 
 };
 
 #endif

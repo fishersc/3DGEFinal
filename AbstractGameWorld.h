@@ -2,7 +2,9 @@
 #ifndef ABSTRACT_GAME_WORLD_H
 #define ABSTRACT_GAME_WORLD_H
 
-#include <vector>
+#include <map>
+#include <string>
+using namespace std;
 
 class AbstractGameObject;
 class GameEngine;
@@ -10,7 +12,7 @@ class GameEngine;
 class AbstractGameWorld
 {
 public:
-   std::vector<AbstractGameObject*> objects;
+   std::map<string, AbstractGameObject*> objects;
 
 protected:
    GameEngine* gameEngine;
@@ -25,6 +27,8 @@ public:
    virtual void render() = 0;
    virtual void updateCamera() = 0;
    virtual void updateViewport(float aspectRatio) = 0;
+
+   virtual void doWorldEvent(int number, float durationMS) = 0;
 };
 
 #endif

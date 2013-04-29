@@ -22,6 +22,8 @@ public:
    // The target is determined from rho, theta, and phi.
    // Look direction is a vector from target to position
    void animate();
+
+   virtual void changeThetaPhi(float phiRatio, float thetaRatio);
 };
 
 #endif

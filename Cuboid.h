@@ -22,11 +22,12 @@ public:
    //    depth - the depth of the cuboid, defaults to 1, must be > than 0
    Cuboid(const glm::vec3& position, float width=1.0f, float height=1.0f, float depth=1.0f);
 
+   inline float getWidth() const { return width; }
+   inline float getHeight() const { return height; }
+   inline float getDepth() const { return depth; }
+
    // Destructor
    virtual ~Cuboid(void);
-
-   void update();
-   void animate(float durationMS);
 
    // Generates the cuboid.  The faces of the cuboid are wound counter-clockwise.
    void generate();

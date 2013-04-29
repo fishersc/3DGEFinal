@@ -19,7 +19,7 @@ glm::mat3 OGLUtil::rotateY(float degrees)
 	float fSin = sinf(fAngRad);
 
 	glm::mat3 theMat(1.0f);
-	theMat[0].x = fCos; theMat[2].x = fSin;
+	theMat[0].x = fCos;  theMat[2].x = fSin;
 	theMat[0].z = -fSin; theMat[2].z = fCos;
 	return theMat;
 }

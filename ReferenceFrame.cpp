@@ -4,6 +4,19 @@ ReferenceFrame::ReferenceFrame(void) : orientation(1.0f)
 {
 }
 
+ReferenceFrame::ReferenceFrame(const ReferenceFrame& copy)
+{
+   this->orientation = copy.orientation;
+}
+
+const ReferenceFrame& ReferenceFrame::operator=(const ReferenceFrame& copy)
+{
+   if(this != &copy){
+      this->orientation = copy.orientation;
+   }
+   return *this;
+}
+
 
 ReferenceFrame::~ReferenceFrame(void)
 {

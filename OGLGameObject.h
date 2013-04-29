@@ -6,6 +6,8 @@
 
 #include <GL\glew.h>
 
+class BoundingBox;
+
 class OGLGameObject :  public AbstractGameObject
 {
 protected:
@@ -23,6 +25,7 @@ protected:
 
 public:
    OGLGameObject(void);
+   OGLGameObject(const OGLGameObject& copy);
    virtual ~OGLGameObject(void);
 
    virtual void render();
@@ -33,6 +36,8 @@ public:
    virtual void setSpecularUniform(GLuint unif);
    virtual void setShininessUniform(GLuint unif);
    virtual void setShader(GLuint shader) { this->shader = shader; }
+   virtual BoundingBox getOrientedBoundingBox(float width, float height, float depth);
+   virtual BoundingBox getOrientedBoundingBox();
 
    void createFromFile(std::string filename);
 

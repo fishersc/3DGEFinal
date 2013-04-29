@@ -20,10 +20,11 @@ public:
    MyCompositeObject(const glm::vec3& pos);
    virtual ~MyCompositeObject(void);
 
+   BoundingBox getOrientedBoundingBox();
+
    void update();
    void animate(float dutationMS);
    void render();
-
    void setTransformMatrixUniform(GLuint unif);
    void setAmbientIntensityUniform(GLuint unif);
    void setSpecularUniform(GLuint unif);
