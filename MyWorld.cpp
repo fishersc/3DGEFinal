@@ -38,6 +38,23 @@ void MyWorld::animate(float durationMS)
    OGLGameWorld::animate(durationMS);
    checkForCollisions();
    showBoundingBoxes();
+
+   Laser* laser = NULL;
+   std::map<string, AbstractGameObject*>::iterator io;
+   for(io = objects.begin(); io != objects.end(); io++)
+   {
+	   laser = dynamic_cast<Laser*>((*io).second);
+	   if(laser != NULL)
+	   {
+		   if(laser->frame.getPosition().z < -zFar)
+		   {
+			   io--;
+			   objects.erase(laser->name);
+			   if(io == objects.end()) break;
+		   }
+	   }
+   }
+
 }
 
 void MyWorld::showBoundingBoxes()
@@ -69,6 +86,8 @@ void MyWorld::showBoundingBoxes()
       lc->frame = object->frame;
       lc->frame.setPosition(b.getCenter());
       boxes.push_back(lc);
+
+
    }
 }
 
@@ -141,6 +160,7 @@ void MyWorld::fireLaser()
 
 	//add speed of ship
 	Laser* laser = new Laser(0.8f);
+	laser->useBoundingBox = true;
 	laser->material.setDiffuse(1, 0, 0);
 	laser->material.setAmbient(0.6f, 0.6f, 0.6f);
 	laser->vertexData.setToOneColor(laser->material.getDiffuse().r, laser->material.getDiffuse().g, laser->material.getDiffuse().b);
