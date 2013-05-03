@@ -89,6 +89,14 @@ void SpaceShip::update()
 {
 	body->frame.translate(strafe,0,-speed);
 	strafe = 0;
+
+	//Loops the ship
+	if(body->frame.getPosition().z < -300)
+	{
+		glm::vec3 resetPOS = glm::vec3(body->frame.getPosition().x,body->frame.getPosition().y,300);
+		body->frame.setPosition(resetPOS);
+	}
+	
 }
 
 void SpaceShip::animate(float durationMS)

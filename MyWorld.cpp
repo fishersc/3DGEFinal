@@ -130,29 +130,57 @@ void MyWorld::showBoundingBoxes()
 
    }
 
+	Astroid* ast = NULL;
+	for(io = objects.begin(); io != objects.end(); io++)
+   {
+	    ast = dynamic_cast<Astroid*>((*io).second);
+	   if(ast != NULL)
+	   {
+		   ast = dynamic_cast<Astroid*>((*io).second);
+			 ast->useBoundingBox = true;
+			b=  ast->getOrientedBoundingBox(7, 7, 7);  //set to astroid width, height, depth
+	   
+			  lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
+				if(object->objectsHit.size() == 0){
+			 lc->vertexData.setToOneColor(0, 1, 0);
+		  }
+		  else{
+			 lc->vertexData.setToOneColor(0, 0, 1);
+		  }
+			  lc->generateVBO();
+		  lc->setShader(shaderMan.shaders["no light"].shaderProgram);
+		  lc->setTransformMatrixUniform(shaderMan.shaders["no light"].unifs["localToWorldMatrix"]);
+		  lc->frame = object->frame;
+			lc->frame.setPosition(ast->base->frame.getPosition());
+		  boxes.push_back(lc);
+	   }
+   }
+
+
     Laser* laser = NULL;
    for(io = objects.begin(); io != objects.end(); io++)
    {
 	    laser = dynamic_cast<Laser*>((*io).second);
 	   if(laser != NULL)
 	   {
-	   laser = dynamic_cast<Laser*>((*io).second);
-		 laser->useBoundingBox = true;
-		b=  laser->getOrientedBoundingBox(.3, .3, 2.1);
+		   laser = dynamic_cast<Laser*>((*io).second);
+			 laser->useBoundingBox = true;
+			b=  laser->getOrientedBoundingBox(.3, .3, 2.1);
+	   
+			  lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
+				if(object->objectsHit.size() == 0){
+			 lc->vertexData.setToOneColor(0, 1, 0);
+		  }
+		  else{
+			 lc->vertexData.setToOneColor(0, 0, 1);
+		  }
+			  lc->generateVBO();
+		  lc->setShader(shaderMan.shaders["no light"].shaderProgram);
+		  lc->setTransformMatrixUniform(shaderMan.shaders["no light"].unifs["localToWorldMatrix"]);
+		  lc->frame = object->frame;
+		  lc->frame.setPosition(b.getCenter());
+		  boxes.push_back(lc);
 	   }
-		  lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
-		    if(object->objectsHit.size() == 0){
-         lc->vertexData.setToOneColor(0, 1, 0);
-      }
-      else{
-         lc->vertexData.setToOneColor(0, 0, 1);
-      }
-		  lc->generateVBO();
-      lc->setShader(shaderMan.shaders["no light"].shaderProgram);
-      lc->setTransformMatrixUniform(shaderMan.shaders["no light"].unifs["localToWorldMatrix"]);
-      lc->frame = object->frame;
-      lc->frame.setPosition(b.getCenter());
-      boxes.push_back(lc);
    }
 }
 
