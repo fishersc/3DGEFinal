@@ -61,6 +61,14 @@ SpaceShip::SpaceShip(const glm::vec3& pos)
    angleY = 0;
    angleZ = 0;
    speedZ = 60;
+
+   MaxSpeed =.50f;
+   speed = 0.25f;
+   LimitStrafe = 10;  //how far can strafe left or right from center
+
+   strafe = 0;
+   strafePOS= 0;
+   //speed = 0;
 }
 
 
@@ -79,10 +87,13 @@ SpaceShip::~SpaceShip(void)
 
 void SpaceShip::update()
 {
+	body->frame.translate(strafe,0,-speed);
+	strafe = 0;
 }
 
 void SpaceShip::animate(float durationMS)
 {
+	
 	/*
    angleY += (30 * durationMS/1000);
    if(angleY > 360) angleY -= 360;
@@ -176,6 +187,9 @@ void SpaceShip::render()
 	
    }
    frameStack.pop();
+
+   frameStack.push();
+
 
    frameStack.push();
       {

@@ -16,6 +16,12 @@ class SpaceShip :
    Pyramid* thruster1;
    Pyramid* thruster2;
    glm::vec3 gun;
+
+   float speed;
+   float strafe;
+   float MaxSpeed;
+   float LimitStrafe;
+   float strafePOS;
 private:
    float angleY;
    float angleZ, speedZ;

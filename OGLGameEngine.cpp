@@ -4,6 +4,7 @@
 #include "OGLReverseSphericalCamera.h"
 #include "OGLGameWorld.h"
 #include "MyWorld.h"
+#include "SpaceShip.h"
 
 #include <iostream>
 
@@ -26,9 +27,9 @@ OGLGameEngine::~OGLGameEngine(void)
 
 void OGLGameEngine::initialize()
 {
-   theCamera->cameraPosSpherical.phi = 0.0f;  
-   theCamera->cameraPosSpherical.theta = 0.0f;  
-   theCamera->cameraPosSpherical.rho = 0.1f;  
+   theCamera->cameraPosSpherical.phi = -90.0f;  
+   theCamera->cameraPosSpherical.theta = -20.0f;  
+   theCamera->cameraPosSpherical.rho = -300.0f;  
 
    theCamera->cameraTarget.x = 0;
    theCamera->cameraTarget.y = 0;
@@ -70,6 +71,12 @@ void OGLGameEngine::playerUpdate(float tickTimeMS)
    }else if(inputSystem.keys[VK_DOWN]){
       gameWorld->doWorldEvent(101, tickTimeMS);
       inputSystem.keys[VK_UP] = false;
+   }else if(inputSystem.keys[VK_RIGHT]){
+      gameWorld->doWorldEvent(102, tickTimeMS);
+      inputSystem.keys[VK_RIGHT] = false;
+   }else if(inputSystem.keys[VK_LEFT]){
+      gameWorld->doWorldEvent(103, tickTimeMS);
+      inputSystem.keys[VK_LEFT] = false;
    }
 	else if(inputSystem.keys[VK_SPACE])
    {
@@ -84,11 +91,8 @@ void OGLGameEngine::playerUpdate(float tickTimeMS)
 
 void OGLGameEngine::cameraUpdate()
 {
-   theCamera->changeThetaPhi(inputSystem.getMouseXRatio(), inputSystem.getMouseYRatio());
+  // theCamera->changeThetaPhi(inputSystem.getMouseXRatio(), inputSystem.getMouseYRatio());
    theCamera->animate();
    theCamera->updateTransform();
    gameWorld->updateCamera();
 }
-
-
-

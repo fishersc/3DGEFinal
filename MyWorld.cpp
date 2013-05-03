@@ -40,13 +40,14 @@ void MyWorld::animate(float durationMS)
    showBoundingBoxes();
 
    Laser* laser = NULL;
+   SpaceShip* ship = (SpaceShip*)objects["ship"];
    std::map<string, AbstractGameObject*>::iterator io;
    for(io = objects.begin(); io != objects.end(); io++)
    {
 	   laser = dynamic_cast<Laser*>((*io).second);
 	   if(laser != NULL)
 	   {
-		   if(laser->frame.getPosition().z < -zFar)
+		   if(laser->frame.getPosition().z < -zFar + ship->body->frame.getPosition().z) 
 		   {
 			   io--;
 			   objects.erase(laser->name);
@@ -55,6 +56,42 @@ void MyWorld::animate(float durationMS)
 	   }
    }
 
+}
+
+void MyWorld::checkForCollisions()
+{
+
+
+
+   BoundingBox b1, b2;
+   Laser* laser = NULL;
+   std::map<string, AbstractGameObject*>::iterator io;
+   for(io = objects.begin(); io != objects.end(); io++)
+   {
+	   laser = dynamic_cast<Laser*>((*io).second);
+	   if(laser != NULL)
+	   {
+		   laser->useBoundingBox = true;
+		   laser->getOrientedBoundingBox(.3, .3, 2);
+	   }
+   }
+
+
+   // THIS CODE IS FOR REFERENCE s
+   /*std::map<string, AbstractGameObject*>::iterator io1, io2;
+   for(io1 = objects.begin(); io1 != objects.end(); io1++){
+      obj1 = (*io1).second;
+      obj1->objectsHit.clear();
+      b1 = obj1->getOrientedBoundingBox();
+      for(io2 = objects.begin(); io2 != objects.end(); io2++){
+         obj2 = (*io2).second;
+         if(obj2 == obj1) continue;
+         b2 = obj2->getOrientedBoundingBox();
+         if(b1.overlapsWith(b2)){
+            obj1->objectsHit.push_back(obj2);
+         }
+      }
+   }*/
 }
 
 void MyWorld::showBoundingBoxes()
@@ -73,6 +110,9 @@ void MyWorld::showBoundingBoxes()
       object = (*io).second;
       b = object->getOrientedBoundingBox();
 
+
+
+
       lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
       if(object->objectsHit.size() == 0){
          lc->vertexData.setToOneColor(0, 1, 0);
@@ -89,6 +129,31 @@ void MyWorld::showBoundingBoxes()
 
 
    }
+
+    Laser* laser = NULL;
+   for(io = objects.begin(); io != objects.end(); io++)
+   {
+	    laser = dynamic_cast<Laser*>((*io).second);
+	   if(laser != NULL)
+	   {
+	   laser = dynamic_cast<Laser*>((*io).second);
+		 laser->useBoundingBox = true;
+		b=  laser->getOrientedBoundingBox(.3, .3, 2.1);
+	   }
+		  lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
+		    if(object->objectsHit.size() == 0){
+         lc->vertexData.setToOneColor(0, 1, 0);
+      }
+      else{
+         lc->vertexData.setToOneColor(0, 0, 1);
+      }
+		  lc->generateVBO();
+      lc->setShader(shaderMan.shaders["no light"].shaderProgram);
+      lc->setTransformMatrixUniform(shaderMan.shaders["no light"].unifs["localToWorldMatrix"]);
+      lc->frame = object->frame;
+      lc->frame.setPosition(b.getCenter());
+      boxes.push_back(lc);
+   }
 }
 
 void MyWorld::render()
@@ -102,6 +167,9 @@ void MyWorld::render()
 void MyWorld::updateCamera()
 {
    OGLSphericalCamera* camera = ((OGLGameEngine*)gameEngine)->theCamera;
+
+   SpaceShip* s = (SpaceShip*)objects["ship"]; //Comment out these two lines to make camera still if you need to
+   camera->position.z = s->body->frame.getPosition().z + 13;
 
    // Iterate over all the shaders
    map<string, OGLShaderManager::ShaderData>::iterator si;
@@ -134,16 +202,37 @@ void MyWorld::updateViewport(float aspectRatio)
 void MyWorld::doWorldEvent(int number, float durationMS)
 {
    OGLSphericalCamera* camera = ((OGLGameEngine*)gameEngine)->theCamera;
+   SpaceShip* ship = (SpaceShip*)objects["ship"];
 
    switch(number){
       case 100:
-         camera->position += (camera->lookDir * 10.0f * durationMS/1000.0f);
-         camera->position.y = 10;
+		  if(ship->speed < ship->MaxSpeed)
+			 ship -> speed += .001f;
+         //camera->position += (camera->lookDir * 10.0f * durationMS/1000.0f);
+         //camera->position.y = 10;
          break;
       case 101:
-         camera->position -= (camera->lookDir * 10.0f * durationMS/1000.0f);
-         camera->position.y = 10;
+		  if(ship->speed > 0)
+			 ship -> speed -= .001f;
+		  else
+			  ship->speed =0;
+         //camera->position -= (camera->lookDir * 10.0f * durationMS/1000.0f);
+        // camera->position.y = 10;
          break;
+	  case 102:
+		  if(ship->strafePOS < ship->LimitStrafe)
+		  {
+			 ship->strafe += .03f;
+			 ship->strafePOS += .03f;
+		  }
+		  break;
+	  case 103:
+		  if(ship->strafePOS > -ship->LimitStrafe)
+		  {
+			ship->strafe -= .03f;
+			ship->strafePOS -= .03f;
+		  }
+		  break;
 	  case 300:
 		  fireLaser();
 		  break;
@@ -159,6 +248,7 @@ void MyWorld::fireLaser()
 	count++;
 
 	//add speed of ship
+	//FUnky stuff happened when i added the speed to the laser speed so... yeah.
 	Laser* laser = new Laser(0.8f);
 	laser->useBoundingBox = true;
 	laser->material.setDiffuse(1, 0, 0);
@@ -166,7 +256,11 @@ void MyWorld::fireLaser()
 	laser->vertexData.setToOneColor(laser->material.getDiffuse().r, laser->material.getDiffuse().g, laser->material.getDiffuse().b);
 	laser->generateVBO();
 
-	laser->fire(ship->gun, ship->body->frame);
+	laser->fire(ship->gun + ship->body->frame.getPosition(), ship->body->frame);
+	
+	//Puts Laser in center of ship
+	//laser->fire(ship->body->frame.getPosition(), ship->body->frame);
+	
 	laser->name = ss.str();
 
 	laser->setShader(shaderMan.shaders["world lighting"].shaderProgram);

@@ -32,6 +32,7 @@ public:
    virtual void updateViewport(float aspectRatio);
    virtual void animate(float durationMS);
    virtual void render();
+   void checkForCollisions();
    int count;
 
    
