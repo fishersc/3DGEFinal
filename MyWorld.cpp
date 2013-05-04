@@ -343,32 +343,32 @@ void MyWorld::createGameObjects()
    ship->generateVBO();
    objects["ship"] = ship;
 
-   Astroid* GiantAstroid = new Astroid(glm::vec3(10, 3, -20),7);
+   Astroid* GiantAstroid = new Astroid(ship->body->frame.getPosition()+glm::vec3(-7, 3, -40),7);
    GiantAstroid->material = mat;
    GiantAstroid->vertexData.setToOneColor(GiantAstroid->material.getDiffuse().r, GiantAstroid->material.getDiffuse().g, GiantAstroid->material.getDiffuse().b);
    GiantAstroid->generateVBO();
    objects["GiantAstroid"] = GiantAstroid;
 
 
-   Astroid* GiantAstroid1 = new Astroid(glm::vec3(25, 3, -20),5);
+   Astroid* GiantAstroid1 = new Astroid(ship->body->frame.getPosition()+glm::vec3(-20, 2, -40),5);
    GiantAstroid1->material = mat;
    GiantAstroid1->vertexData.setToOneColor(GiantAstroid1->material.getDiffuse().r, GiantAstroid1->material.getDiffuse().g, GiantAstroid1->material.getDiffuse().b);
    GiantAstroid1->generateVBO();
    objects["GiantAstroid1"] = GiantAstroid1;
 
-   Astroid* GiantAstroid2 = new Astroid(glm::vec3(10, 3, 10),3);
+   Astroid* GiantAstroid2 = new Astroid(ship->body->frame.getPosition()+glm::vec3(7, 1, -40),3);
    GiantAstroid2->material = mat;
    GiantAstroid2->vertexData.setToOneColor(GiantAstroid2->material.getDiffuse().r, GiantAstroid2->material.getDiffuse().g, GiantAstroid2->material.getDiffuse().b);
    GiantAstroid2->generateVBO();
    objects["GiantAstroid2"] = GiantAstroid2;
 
-    Astroid* GiantAstroid3 = new Astroid(glm::vec3(15, 3, -28),7);
+    Astroid* GiantAstroid3 = new Astroid(ship->body->frame.getPosition()+glm::vec3(15, 3, -40),7);
    GiantAstroid3->material = mat;
    GiantAstroid3->vertexData.setToOneColor(GiantAstroid3->material.getDiffuse().r, GiantAstroid3->material.getDiffuse().g, GiantAstroid3->material.getDiffuse().b);
    GiantAstroid3->generateVBO();
    objects["GiantAstroid3"] = GiantAstroid3;
 
-    Astroid* GiantAstroid4 = new Astroid(glm::vec3(6, 3, -45),10);
+    Astroid* GiantAstroid4 = new Astroid(ship->body->frame.getPosition()+glm::vec3(2, 5, -40),10);
    GiantAstroid4->material = mat;
    GiantAstroid4->vertexData.setToOneColor(GiantAstroid4->material.getDiffuse().r, GiantAstroid4->material.getDiffuse().g, GiantAstroid4->material.getDiffuse().b);
    GiantAstroid4->generateVBO();
