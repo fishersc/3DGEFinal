@@ -2,37 +2,37 @@
 #include "AbstractBehavior.h"
 
 
-Astroid::Astroid(const glm::vec3& pos)
+Astroid::Astroid(const glm::vec3& pos,int size)
 {
-   base = new Cuboid(pos, 5,5, 5);
+   base = new Cuboid(pos, size,size,size);
    base->material.setDiffuse(1, 1, 1); 
    base->material.setAmbient(224, 223, 219);
    base->material.setShininess(1.0);
    base->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    base->generateVBO();
 
-   ast = new Cuboid(pos, 5, 5,5);
+   ast = new Cuboid(pos, size, size,size);
    ast->material.setDiffuse(1, 1, 1); 
    ast->material.setAmbient(224, 223, 219);
    ast->material.setShininess(1.0);
    ast->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    ast->generateVBO();
 
-    roid = new Cuboid(pos, 5, 5, 5);
+    roid = new Cuboid(pos, size, size, size);
    roid->material.setDiffuse(1, 1, 1); 
     roid->material.setAmbient(224, 223, 219);
 	roid->material.setShininess(1.0);
 	roid->vertexData.setToOneColor(base->material.getDiffuse().r, base->material.getDiffuse().g, base->material.getDiffuse().b);
    roid->generateVBO();
 
-   torso = new Cuboid(glm::vec3(0, 0, 0), 5, 5, 5);
+   torso = new Cuboid(glm::vec3(0, 0, 0), size, size, size);
    torso->material.setDiffuse(1, 1, 1); 
    torso->material.setAmbient(224, 223, 219);
    torso->material.setShininess(1.0);
    torso->vertexData.setToOneColor(torso->material.getDiffuse().r, torso->material.getDiffuse().g, torso->material.getDiffuse().b);
    torso->generateVBO();
 
-   turret = new Cuboid(glm::vec3(0, 0, 0), 5, 5, 5);
+   turret = new Cuboid(glm::vec3(0, 0, 0),size, size, size);
    turret->material.setDiffuse(1, 1, 1); 
    turret->material.setAmbient(224, 223, 219);
    turret->material.setShininess(1.0);
@@ -42,6 +42,8 @@ Astroid::Astroid(const glm::vec3& pos)
    angleY = 0;
    angleZ = 0;
    speedZ = 60;
+   rotation = rand() % 70+30;
+    rotation2 = rand() % 70+30;
 }
 
 
@@ -133,31 +135,31 @@ void Astroid::render()
    frameStack.push();
    {
       
-      frameStack.rotateY(25);
-	   frameStack.rotateX(35);
+      frameStack.rotateY(rotation);
+	   frameStack.rotateX(rotation2);
       torso->render(frameStack.top());
    
       frameStack.push();
       {
          
-       //  frameStack.rotateY(45);
+       
          frameStack.rotateZ(75);
-          frameStack.rotateY(15);
+          frameStack.rotateY(rotation);
          turret->render(frameStack.top());
 		  frameStack.push();
       {
          
-       //  frameStack.rotateY(65);
+      
        frameStack.rotateZ(55);
-         frameStack.rotateX(35);
-		   frameStack.rotateY(25);
+         frameStack.rotateX(rotation2);
+		   frameStack.rotateY(rotation);
          ast->render(frameStack.top());
 		  frameStack.push();
       {
          
-         frameStack.rotateY(75);
+         frameStack.rotateY(rotation);
          frameStack.rotateZ(55);
-         frameStack.rotateX(25);
+         frameStack.rotateX(rotation2);
          roid->render(frameStack.top());
       }
 	  frameStack.pop();

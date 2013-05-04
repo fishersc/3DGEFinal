@@ -18,12 +18,13 @@ private:
    float angleY;
    float angleZ, speedZ;
 public:
-	Astroid(const glm::vec3& pos);
+	Astroid(const glm::vec3& pos,int size);
 	~Astroid(void);
 	void update();
    void animate(float dutationMS);
    void render();
-
+    int rotation;
+	 int rotation2;
    void setTransformMatrixUniform(GLuint unif);
    void setAmbientIntensityUniform(GLuint unif);
    void setSpecularUniform(GLuint unif);
