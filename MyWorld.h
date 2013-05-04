@@ -34,6 +34,7 @@ public:
    virtual void render();
    void checkForCollisions();
    int count;
+   int rateCount;
 
    
 

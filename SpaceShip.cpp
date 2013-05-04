@@ -63,12 +63,12 @@ SpaceShip::SpaceShip(const glm::vec3& pos)
    speedZ = 60;
 
    MaxSpeed =.50f;
-   speed = 0.25f;
+  // speed = 0.25f;
    LimitStrafe = 10;  //how far can strafe left or right from center
 
    strafe = 0;
    strafePOS= 0;
-   //speed = 0;
+   speed = 0;
 }
 
 

@@ -27,6 +27,7 @@ MyWorld::MyWorld(OGLGameEngine* gameEngine) : OGLGameWorld(gameEngine)
 {
    lightSpeed = 0;
    count = 0;
+   rateCount = 0;
 }
 
 MyWorld::~MyWorld(void)
@@ -51,6 +52,7 @@ void MyWorld::animate(float durationMS)
 		   {
 			   io--;
 			   objects.erase(laser->name);
+			   rateCount--;
 			   if(io == objects.end()) break;
 		   }
 	   }
@@ -270,10 +272,16 @@ void MyWorld::doWorldEvent(int number, float durationMS)
 void MyWorld::fireLaser()
 {
 	SpaceShip* ship = (SpaceShip*)objects["ship"];
+	
+	stringstream a;
+	a << count-1;
+	if(rateCount == 0 || objects[a.str()] == NULL || objects[a.str()]->frame.getPosition().z < -zFar/3 + ship->body->frame.getPosition().z)
+	{
 
 	stringstream ss;
 	ss << count;
 	count++;
+	rateCount++;
 
 	//add speed of ship
 	//FUnky stuff happened when i added the speed to the laser speed so... yeah.
@@ -298,6 +306,7 @@ void MyWorld::fireLaser()
          laser->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
 
 		 objects[laser->name] = laser;
+	}
 
 
 

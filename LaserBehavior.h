@@ -5,11 +5,11 @@ class LaserBehavior :
 	public AbstractBehavior
 {
 public:
-   float speed;
+   bool canFire;
 public:
 	LaserBehavior(void);
 	~LaserBehavior(void);
 	 void animate(float elapsedMS);
-	 void fire(const glm::vec3& position, const ReferenceFrame& frame);
+	 bool fire();
 };
 
