@@ -8,7 +8,7 @@
 OGLGameWorld::OGLGameWorld(OGLGameEngine* gameEngine) : AbstractGameWorld((GameEngine*)gameEngine)
 {
    zNear = 0.1f; 
-	zFar = 40.0f;
+	zFar = 250.0f;
    // The default light direction is directly above
    lightDirection = glm::vec4(0.0f, 0.0f, 14.0f, 0.0f);
 }
