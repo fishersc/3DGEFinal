@@ -27,8 +27,8 @@ void Laser::animate(float durationMS)
 	totalTime += t;
 	glm::vec3 pos;
 	pos.x = startPos.x + (frame.orientation[1].x * speed * totalTime);
-	pos.z = startPos.z + (frame.orientation[1].z * speed * totalTime) + (0.5f * -80 * totalTime);
-	//pos.y = startPos.y + (frame.orientation[1].y * speed * totalTime);
+	pos.z = startPos.z + (frame.orientation[1].z * speed * totalTime) + (0.5f * -(speed*250+80) * totalTime);
+	pos.y = 2;
 	frame.setPosition(pos);
 } 
 
