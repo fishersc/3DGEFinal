@@ -19,8 +19,18 @@ RandomWaypointBehavior::~RandomWaypointBehavior(void)
 void RandomWaypointBehavior::generateWaypoint()
 {
    wayPoint.y = y;
-   wayPoint.x = (rand() % (int)(maxX - minX)) + minX;
-   wayPoint.z = (rand() % (int)(maxZ - minZ)) + minZ;
+   float newX = (rand() % (int)(maxX - minX)) + minX;
+   float newZ = (rand() % (int)(maxZ - minZ)) + minZ;
+   if(wayPoint.x  == minX)
+   {
+	   wayPoint.x = maxX;
+   }
+   else
+   {
+		wayPoint.x = minX;
+   }
+	wayPoint.z = newZ;
+   
 }
 
 void RandomWaypointBehavior::updateState()
@@ -28,7 +38,7 @@ void RandomWaypointBehavior::updateState()
    if(!object) return;
 
    glm::vec3 pos = object->frame.getPosition();
-   float distance = glm::length(wayPoint - pos);
+   float distance = glm::length(wayPoint.x - pos.x);
    if(distance <= 0.09f){
       generateWaypoint();
    }
@@ -45,8 +55,8 @@ void RandomWaypointBehavior::animate(float elapsedMS)
 
    glm::vec3 pos = object->frame.getPosition();
    object->direction = glm::normalize(wayPoint - pos);
-   pos += (object->direction * object->speed * elapsedMS/1000.0f);
-   object->frame.rotateY(2);
+   pos += (object->direction * (object->speed+100) * elapsedMS/1000.0f);
+   //object->frame.rotateY(2);
    object->frame.setPosition(pos);
    
 }
