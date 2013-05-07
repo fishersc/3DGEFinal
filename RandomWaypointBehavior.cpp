@@ -19,7 +19,6 @@ RandomWaypointBehavior::~RandomWaypointBehavior(void)
 void RandomWaypointBehavior::generateWaypoint()
 {
    wayPoint.y = y;
-   float newX = (rand() % (int)(maxX - minX)) + minX;
    float newZ = (rand() % (int)(maxZ - minZ)) + minZ;
    if(wayPoint.x  == minX)
    {

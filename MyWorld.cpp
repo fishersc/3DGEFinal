@@ -441,48 +441,102 @@ void MyWorld::createAstroids()
    mat.setDiffuse(0.1f, 0.5f, 0.2f); 
    mat.setAmbient(0.2f, 0.2f, 0.2f);
    SpaceShip* ship = (SpaceShip*)objects["ship"];
-
+//Astroid
    Astroid* GiantAstroid = new Astroid(glm::vec3(-7, 2, -250),7);
    GiantAstroid->material = mat;
    GiantAstroid->vertexData.setToOneColor(GiantAstroid->material.getDiffuse().r, GiantAstroid->material.getDiffuse().g, GiantAstroid->material.getDiffuse().b);
    GiantAstroid->generateVBO();
    bounds = GiantAstroid->checkSector();
+
    RandomWaypointBehavior* behave = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
    GiantAstroid->base->behavior = behave;
    behave->object = GiantAstroid->base;
    GiantAstroid->name = "GiantAstroid";
+
+   //set up shaders again for when recreating  There has to be a better way to do this then doing it for all the astroids individually
+	GiantAstroid->setShader(shaderMan.shaders["world lighting"].shaderProgram);
+	GiantAstroid->setTransformMatrixUniform(shaderMan.shaders["world lighting"].unifs["localToWorldMatrix"]);
+	GiantAstroid->setAmbientIntensityUniform(shaderMan.shaders["world lighting"].unifs["fragAmbientIntensity"]);
+	GiantAstroid->setSpecularUniform(shaderMan.shaders["world lighting"].unifs["fragSpecular"]);
+	GiantAstroid->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
+
    objects["GiantAstroid"] = GiantAstroid;
 
+//Astroid 1
    Astroid* GiantAstroid1 = new Astroid(glm::vec3(-20, 2, -750),5);
    GiantAstroid1->material = mat;
    GiantAstroid1->vertexData.setToOneColor(GiantAstroid1->material.getDiffuse().r, GiantAstroid1->material.getDiffuse().g, GiantAstroid1->material.getDiffuse().b);
    GiantAstroid1->generateVBO();
    bounds = GiantAstroid1->checkSector();
-//   RandomWaypointBehavior* behave1 = new RandomWaypointBehavior(-300,300,bounds[0],bounds[1],2);
-//   GiantAstroid1->base->behavior = behave1;
-//   behave1->object = GiantAstroid1->base;
+
+   RandomWaypointBehavior* behave1 = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
+   GiantAstroid1->base->behavior = behave1;
+   behave1->object = GiantAstroid1->base;
+
+	GiantAstroid1->setShader(shaderMan.shaders["world lighting"].shaderProgram);
+	GiantAstroid1->setTransformMatrixUniform(shaderMan.shaders["world lighting"].unifs["localToWorldMatrix"]);
+	GiantAstroid1->setAmbientIntensityUniform(shaderMan.shaders["world lighting"].unifs["fragAmbientIntensity"]);
+	GiantAstroid1->setSpecularUniform(shaderMan.shaders["world lighting"].unifs["fragSpecular"]);
+	GiantAstroid1->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
+
    GiantAstroid1->name = "GiantAstroid1";
    objects["GiantAstroid1"] = GiantAstroid1;
 
+//Astroid 2
    Astroid* GiantAstroid2 = new Astroid(glm::vec3(7, 2, 0),3);
    GiantAstroid2->material = mat;
    GiantAstroid2->vertexData.setToOneColor(GiantAstroid2->material.getDiffuse().r, GiantAstroid2->material.getDiffuse().g, GiantAstroid2->material.getDiffuse().b);
    GiantAstroid2->generateVBO();
    GiantAstroid2->name = "GiantAstroid2";
+
+   RandomWaypointBehavior* behave2 = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
+   GiantAstroid2->base->behavior = behave2;
+   behave2->object = GiantAstroid2->base;
+
+   GiantAstroid2->setShader(shaderMan.shaders["world lighting"].shaderProgram);
+	GiantAstroid2->setTransformMatrixUniform(shaderMan.shaders["world lighting"].unifs["localToWorldMatrix"]);
+	GiantAstroid2->setAmbientIntensityUniform(shaderMan.shaders["world lighting"].unifs["fragAmbientIntensity"]);
+	GiantAstroid2->setSpecularUniform(shaderMan.shaders["world lighting"].unifs["fragSpecular"]);
+	GiantAstroid2->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
+
    objects["GiantAstroid2"] = GiantAstroid2;
 
+//Astroid 3
     Astroid* GiantAstroid3 = new Astroid(glm::vec3(15, 2, 250),7);
    GiantAstroid3->material = mat;
    GiantAstroid3->vertexData.setToOneColor(GiantAstroid3->material.getDiffuse().r, GiantAstroid3->material.getDiffuse().g, GiantAstroid3->material.getDiffuse().b);
    GiantAstroid3->generateVBO();
    GiantAstroid3->name = "GiantAstroid3";
+
+   RandomWaypointBehavior* behave3 = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
+   GiantAstroid3->base->behavior = behave3;
+   behave3->object = GiantAstroid3->base;
+
+   GiantAstroid3->setShader(shaderMan.shaders["world lighting"].shaderProgram);
+	GiantAstroid3->setTransformMatrixUniform(shaderMan.shaders["world lighting"].unifs["localToWorldMatrix"]);
+	GiantAstroid3->setAmbientIntensityUniform(shaderMan.shaders["world lighting"].unifs["fragAmbientIntensity"]);
+	GiantAstroid3->setSpecularUniform(shaderMan.shaders["world lighting"].unifs["fragSpecular"]);
+	GiantAstroid3->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
+
    objects["GiantAstroid3"] = GiantAstroid3;
 
+//Astroid 4
     Astroid* GiantAstroid4 = new Astroid(glm::vec3(2, 2, 750),10);
    GiantAstroid4->material = mat;
    GiantAstroid4->vertexData.setToOneColor(GiantAstroid4->material.getDiffuse().r, GiantAstroid4->material.getDiffuse().g, GiantAstroid4->material.getDiffuse().b);
    GiantAstroid4->generateVBO();
    GiantAstroid4->name = "GiantAstroid4";
+
+   RandomWaypointBehavior* behave4 = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
+   GiantAstroid4->base->behavior = behave4;
+   behave4->object = GiantAstroid4->base;
+
+   GiantAstroid4->setShader(shaderMan.shaders["world lighting"].shaderProgram);
+	GiantAstroid4->setTransformMatrixUniform(shaderMan.shaders["world lighting"].unifs["localToWorldMatrix"]);
+	GiantAstroid4->setAmbientIntensityUniform(shaderMan.shaders["world lighting"].unifs["fragAmbientIntensity"]);
+	GiantAstroid4->setSpecularUniform(shaderMan.shaders["world lighting"].unifs["fragSpecular"]);
+	GiantAstroid4->setShininessUniform(shaderMan.shaders["world lighting"].unifs["fragShininess"]);
+
    objects["GiantAstroid4"] = GiantAstroid4;
 
 }
