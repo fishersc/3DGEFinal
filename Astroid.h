@@ -21,6 +21,8 @@ class Astroid :
 	   Cuboid* roid;
 
 	   int size;
+	   string name;
+	   int sector;
 private:
    float angleY;
    float angleZ, speedZ;

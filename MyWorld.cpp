@@ -64,6 +64,22 @@ void MyWorld::animate(float durationMS)
 	   }
    }
 
+   Astroid* astroid;
+   if(ship->body->frame.getPosition().z < -1000)
+   {
+	   for(io = objects.begin(); io != objects.end(); io++)
+	   {
+		   astroid = dynamic_cast<Astroid*>((*io).second);
+		   if(astroid != NULL)
+		   {
+				   io--;
+				   objects.erase(astroid->name);
+				   if(io == objects.end()) break;
+		   }
+	   }
+	   createAstroids();
+   }
+
 }
 
 void MyWorld::checkForCollisions()
@@ -426,7 +442,7 @@ void MyWorld::createAstroids()
    mat.setAmbient(0.2f, 0.2f, 0.2f);
    SpaceShip* ship = (SpaceShip*)objects["ship"];
 
-   Astroid* GiantAstroid = new Astroid(ship->body->frame.getPosition()+glm::vec3(-7, 3, -250),7);
+   Astroid* GiantAstroid = new Astroid(glm::vec3(-7, 2, -250),7);
    GiantAstroid->material = mat;
    GiantAstroid->vertexData.setToOneColor(GiantAstroid->material.getDiffuse().r, GiantAstroid->material.getDiffuse().g, GiantAstroid->material.getDiffuse().b);
    GiantAstroid->generateVBO();
@@ -434,35 +450,41 @@ void MyWorld::createAstroids()
    RandomWaypointBehavior* behave = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
    GiantAstroid->base->behavior = behave;
    behave->object = GiantAstroid->base;
+   GiantAstroid->name = "GiantAstroid";
    objects["GiantAstroid"] = GiantAstroid;
 
-   Astroid* GiantAstroid1 = new Astroid(ship->body->frame.getPosition()+glm::vec3(-20, 2, -750),5);
+   Astroid* GiantAstroid1 = new Astroid(glm::vec3(-20, 2, -750),5);
    GiantAstroid1->material = mat;
    GiantAstroid1->vertexData.setToOneColor(GiantAstroid1->material.getDiffuse().r, GiantAstroid1->material.getDiffuse().g, GiantAstroid1->material.getDiffuse().b);
    GiantAstroid1->generateVBO();
-   //bounds = GiantAstroid1->checkSector();
-   //RandomWaypointBehavior* behave1 = new RandomWaypointBehavior(-300,300,bounds[0],bounds[1],2);
-   //GiantAstroid1->base->behavior = behave1;
-  // behave1->object = GiantAstroid1->base;
+   bounds = GiantAstroid1->checkSector();
+//   RandomWaypointBehavior* behave1 = new RandomWaypointBehavior(-300,300,bounds[0],bounds[1],2);
+//   GiantAstroid1->base->behavior = behave1;
+//   behave1->object = GiantAstroid1->base;
+   GiantAstroid1->name = "GiantAstroid1";
    objects["GiantAstroid1"] = GiantAstroid1;
 
-   Astroid* GiantAstroid2 = new Astroid(ship->body->frame.getPosition()+glm::vec3(7, 1, 0),3);
+   Astroid* GiantAstroid2 = new Astroid(glm::vec3(7, 2, 0),3);
    GiantAstroid2->material = mat;
    GiantAstroid2->vertexData.setToOneColor(GiantAstroid2->material.getDiffuse().r, GiantAstroid2->material.getDiffuse().g, GiantAstroid2->material.getDiffuse().b);
    GiantAstroid2->generateVBO();
+   GiantAstroid2->name = "GiantAstroid2";
    objects["GiantAstroid2"] = GiantAstroid2;
 
-    Astroid* GiantAstroid3 = new Astroid(ship->body->frame.getPosition()+glm::vec3(15, 3, 250),7);
+    Astroid* GiantAstroid3 = new Astroid(glm::vec3(15, 2, 250),7);
    GiantAstroid3->material = mat;
    GiantAstroid3->vertexData.setToOneColor(GiantAstroid3->material.getDiffuse().r, GiantAstroid3->material.getDiffuse().g, GiantAstroid3->material.getDiffuse().b);
    GiantAstroid3->generateVBO();
+   GiantAstroid3->name = "GiantAstroid3";
    objects["GiantAstroid3"] = GiantAstroid3;
 
-    Astroid* GiantAstroid4 = new Astroid(ship->body->frame.getPosition()+glm::vec3(2, 5, 750),10);
+    Astroid* GiantAstroid4 = new Astroid(glm::vec3(2, 2, 750),10);
    GiantAstroid4->material = mat;
    GiantAstroid4->vertexData.setToOneColor(GiantAstroid4->material.getDiffuse().r, GiantAstroid4->material.getDiffuse().g, GiantAstroid4->material.getDiffuse().b);
    GiantAstroid4->generateVBO();
+   GiantAstroid4->name = "GiantAstroid4";
    objects["GiantAstroid4"] = GiantAstroid4;
+
 }
 
 void MyWorld::setupShaders()

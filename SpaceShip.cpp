@@ -114,9 +114,9 @@ void SpaceShip::update()
 	strafe = 0;
 
 	//Loops the ship
-	if(body->frame.getPosition().z < -300)
+	if(body->frame.getPosition().z < -1250)
 	{
-		glm::vec3 resetPOS = glm::vec3(body->frame.getPosition().x,body->frame.getPosition().y,300);
+		glm::vec3 resetPOS = glm::vec3(body->frame.getPosition().x,body->frame.getPosition().y,1250);
 		body->frame.setPosition(resetPOS);
 	}
 	

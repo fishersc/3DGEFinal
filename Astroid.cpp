@@ -45,6 +45,24 @@ Astroid::Astroid(const glm::vec3& pos,int size)
    rotation = rand() % 70+30;
     rotation2 = rand() % 70+30;
 	this->size = size;
+
+
+	if(pos.z <= 1000 && pos.z >= 500)
+	{
+		sector = 0;
+	}
+	else if(pos.z < 500 && pos.z >= 0)
+	{
+		sector = 1;
+	}
+	else if(pos.z < 0 && pos.z >= -500)
+	{
+		sector = 2;
+	}
+	else if(pos.z < -500 && pos.z >= -1000)
+	{
+		sector = 3;
+	}
 }
 
 
@@ -174,26 +192,8 @@ void Astroid::render()
 
 BoundZ Astroid::checkSector()
 {
-	int sector;
-
 
 	BoundZ bound;
-	if(base->frame.getPosition().z <= 1000 && base->frame.getPosition().z >= 500)
-	{
-		sector = 0;
-	}
-	else if(base->frame.getPosition().z < 500 && base->frame.getPosition().z >= 0)
-	{
-		sector = 1;
-	}
-	else if(base->frame.getPosition().z < 0 && base->frame.getPosition().z >= -500)
-	{
-		sector = 2;
-	}
-	else if(base->frame.getPosition().z < -500 && base->frame.getPosition().z >= -1000)
-	{
-		sector = 3;
-	}
 
 	 switch(sector)
 	{
