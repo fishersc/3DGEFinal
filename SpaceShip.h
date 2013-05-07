@@ -2,6 +2,9 @@
 #include "oglcompositegameobject.h"
 #include "Pyramid.h"
 #include "Cuboid.h"
+#include "Sphere.h"
+#include "Cylinder.h"
+
 class SpaceShip :
 	public OGLCompositeGameObject
 {
@@ -9,9 +12,12 @@ class SpaceShip :
    Cuboid* body;
    Cuboid* engineConnector1;
    Cuboid* engineConnector2;
-   Cuboid* engine1;
-   Cuboid* engine2;
-   Cuboid* cockpit2;
+   Cylinder* engine1;
+   Cylinder* engine2;
+   Cuboid* spoilerside1;
+	Cuboid* spoilerside2;
+	Cuboid* spoilertop;
+   Sphere* cockpit2;
    Pyramid* cockpit1;
    Pyramid* thruster1;
    Pyramid* thruster2;
