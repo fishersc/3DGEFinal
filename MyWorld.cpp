@@ -19,6 +19,7 @@
 #include "Astroid.h"
 #include "Laser.h"
 
+
 #include <glm/gtc/type_ptr.hpp>
 #include <glutil/glutil.h>
 #include <sstream>
@@ -39,6 +40,11 @@ void MyWorld::animate(float durationMS)
    OGLGameWorld::animate(durationMS);
    checkForCollisions();
    showBoundingBoxes();
+
+
+   //Astroid* asteroid =  (Astroid*)objects["GiantAstroid"];
+   //asteroid->base->frame.translate(.01f,0,0);
+
 
    Laser* laser = NULL;
    SpaceShip* ship = (SpaceShip*)objects["ship"];
@@ -67,6 +73,7 @@ void MyWorld::checkForCollisions()
 
    BoundingBox b1, b2;
    Laser* laser = NULL;
+   /*
    std::map<string, AbstractGameObject*>::iterator io;
    for(io = objects.begin(); io != objects.end(); io++)
    {
@@ -77,6 +84,33 @@ void MyWorld::checkForCollisions()
 		   laser->getOrientedBoundingBox(.3, .3, 2);
 	   }
    }
+   */
+   Astroid * astroid = NULL;
+   std::map<string, AbstractGameObject*>::iterator io,io2;
+
+   for(io2= objects.begin(); io2 != objects.end(); io2++)
+   {
+	   astroid = dynamic_cast<Astroid*>((*io2).second);
+	   if(astroid != NULL)
+	   {
+		   astroid->useBoundingBox = true;
+		   b2= astroid->getOrientedBoundingBox(sqrt(2.0f*(astroid->size*astroid->size)), sqrt(2.0f*(astroid->size*astroid->size)), sqrt(2.0f*(astroid->size*astroid->size)));
+		   b2.orientation = astroid->base->frame.orientation;
+		   for(io = objects.begin(); io != objects.end(); io++)
+		   {
+			   laser = dynamic_cast<Laser*>((*io).second);
+			   if(laser != NULL)
+			   {
+				   laser->useBoundingBox = true;
+				   b1 = laser->getOrientedBoundingBox(.3, .3, 2);
+				   if(b1.overlapsWith(b2))
+				   {
+					   astroid->base->frame.setPosition(glm::vec3(-10,5,0));
+				   }
+			   }
+		   }
+	   }
+	}
 
 
    // THIS CODE IS FOR REFERENCE s
@@ -140,7 +174,7 @@ void MyWorld::showBoundingBoxes()
 	   {
 		   ast = dynamic_cast<Astroid*>((*io).second);
 			 ast->useBoundingBox = true;
-			b=  ast->getOrientedBoundingBox(7, 7, 7);  //set to astroid width, height, depth
+			 b=  ast->getOrientedBoundingBox(sqrt(2.0f*(ast->size*ast->size)), sqrt(2.0f*(ast->size*ast->size)), sqrt(2.0f*(ast->size*ast->size)));  //set to astroid width, height, depth
 	   
 			  lc = new LineCuboid(b.getWidth(), b.getHeight(), b.getDepth());
 				if(object->objectsHit.size() == 0){
@@ -285,17 +319,17 @@ void MyWorld::fireLaser()
 
 	//add speed of ship
 	//FUnky stuff happened when i added the speed to the laser speed so... yeah.
-	Laser* laser = new Laser(0.8f);
+	Laser* laser = new Laser(0.8f+ship->speed);
 	laser->useBoundingBox = true;
 	laser->material.setDiffuse(1, 0, 0);
 	laser->material.setAmbient(0.6f, 0.6f, 0.6f);
 	laser->vertexData.setToOneColor(laser->material.getDiffuse().r, laser->material.getDiffuse().g, laser->material.getDiffuse().b);
 	laser->generateVBO();
 
-	laser->fire(ship->gun + ship->body->frame.getPosition(), ship->body->frame);
+	//laser->fire(ship->gun + ship->body->frame.getPosition(), ship->body->frame);
 	
 	//Puts Laser in center of ship
-	//laser->fire(ship->body->frame.getPosition(), ship->body->frame);
+	laser->fire(ship->body->frame.getPosition(), ship->body->frame);
 	
 	laser->name = ss.str();
 
@@ -331,7 +365,7 @@ void MyWorld::createGameObjects()
 
   /* RandomWaypointBehavior* behave = new RandomWaypointBehavior(-20, 20, -20, 20, 1);
    m->behavior = behave;
-   behave->object = m;*/
+   behave->object = m;*/  
 
    Material mat;
    mat.setDiffuse(0.1f, 0.5f, 0.2f); 
@@ -343,38 +377,7 @@ void MyWorld::createGameObjects()
    ship->generateVBO();
    objects["ship"] = ship;
 
-   Astroid* GiantAstroid = new Astroid(ship->body->frame.getPosition()+glm::vec3(-7, 3, -40),7);
-   GiantAstroid->material = mat;
-   GiantAstroid->vertexData.setToOneColor(GiantAstroid->material.getDiffuse().r, GiantAstroid->material.getDiffuse().g, GiantAstroid->material.getDiffuse().b);
-   GiantAstroid->generateVBO();
-   objects["GiantAstroid"] = GiantAstroid;
-
-
-   Astroid* GiantAstroid1 = new Astroid(ship->body->frame.getPosition()+glm::vec3(-20, 2, -40),5);
-   GiantAstroid1->material = mat;
-   GiantAstroid1->vertexData.setToOneColor(GiantAstroid1->material.getDiffuse().r, GiantAstroid1->material.getDiffuse().g, GiantAstroid1->material.getDiffuse().b);
-   GiantAstroid1->generateVBO();
-   objects["GiantAstroid1"] = GiantAstroid1;
-
-   Astroid* GiantAstroid2 = new Astroid(ship->body->frame.getPosition()+glm::vec3(7, 1, -40),3);
-   GiantAstroid2->material = mat;
-   GiantAstroid2->vertexData.setToOneColor(GiantAstroid2->material.getDiffuse().r, GiantAstroid2->material.getDiffuse().g, GiantAstroid2->material.getDiffuse().b);
-   GiantAstroid2->generateVBO();
-   objects["GiantAstroid2"] = GiantAstroid2;
-
-    Astroid* GiantAstroid3 = new Astroid(ship->body->frame.getPosition()+glm::vec3(15, 3, -40),7);
-   GiantAstroid3->material = mat;
-   GiantAstroid3->vertexData.setToOneColor(GiantAstroid3->material.getDiffuse().r, GiantAstroid3->material.getDiffuse().g, GiantAstroid3->material.getDiffuse().b);
-   GiantAstroid3->generateVBO();
-   objects["GiantAstroid3"] = GiantAstroid3;
-
-    Astroid* GiantAstroid4 = new Astroid(ship->body->frame.getPosition()+glm::vec3(2, 5, -40),10);
-   GiantAstroid4->material = mat;
-   GiantAstroid4->vertexData.setToOneColor(GiantAstroid4->material.getDiffuse().r, GiantAstroid4->material.getDiffuse().g, GiantAstroid4->material.getDiffuse().b);
-   GiantAstroid4->generateVBO();
-   objects["GiantAstroid4"] = GiantAstroid4;
-
-
+  createAstroids();
 
   /* m = new MyCompositeObject(glm::vec3(0, 1, -5));
    m->useBoundingBox = true;
@@ -413,6 +416,53 @@ void MyWorld::createGameObjects()
    floor->vertexData.setToOneColor(floor->material.getDiffuse().r, floor->material.getDiffuse().g, floor->material.getDiffuse().b);
    floor->generateVBO();
    objects["floor"] = floor;
+}
+
+void MyWorld::createAstroids()
+{
+	BoundZ bounds;
+      Material mat;
+   mat.setDiffuse(0.1f, 0.5f, 0.2f); 
+   mat.setAmbient(0.2f, 0.2f, 0.2f);
+   SpaceShip* ship = (SpaceShip*)objects["ship"];
+
+   Astroid* GiantAstroid = new Astroid(ship->body->frame.getPosition()+glm::vec3(-7, 3, -250),7);
+   GiantAstroid->material = mat;
+   GiantAstroid->vertexData.setToOneColor(GiantAstroid->material.getDiffuse().r, GiantAstroid->material.getDiffuse().g, GiantAstroid->material.getDiffuse().b);
+   GiantAstroid->generateVBO();
+   bounds = GiantAstroid->checkSector();
+   RandomWaypointBehavior* behave = new RandomWaypointBehavior(-300,300,bounds.maxZ,bounds.minZ,2);
+   GiantAstroid->base->behavior = behave;
+   behave->object = GiantAstroid->base;
+   objects["GiantAstroid"] = GiantAstroid;
+
+   Astroid* GiantAstroid1 = new Astroid(ship->body->frame.getPosition()+glm::vec3(-20, 2, -750),5);
+   GiantAstroid1->material = mat;
+   GiantAstroid1->vertexData.setToOneColor(GiantAstroid1->material.getDiffuse().r, GiantAstroid1->material.getDiffuse().g, GiantAstroid1->material.getDiffuse().b);
+   GiantAstroid1->generateVBO();
+   //bounds = GiantAstroid1->checkSector();
+   //RandomWaypointBehavior* behave1 = new RandomWaypointBehavior(-300,300,bounds[0],bounds[1],2);
+   //GiantAstroid1->base->behavior = behave1;
+  // behave1->object = GiantAstroid1->base;
+   objects["GiantAstroid1"] = GiantAstroid1;
+
+   Astroid* GiantAstroid2 = new Astroid(ship->body->frame.getPosition()+glm::vec3(7, 1, 0),3);
+   GiantAstroid2->material = mat;
+   GiantAstroid2->vertexData.setToOneColor(GiantAstroid2->material.getDiffuse().r, GiantAstroid2->material.getDiffuse().g, GiantAstroid2->material.getDiffuse().b);
+   GiantAstroid2->generateVBO();
+   objects["GiantAstroid2"] = GiantAstroid2;
+
+    Astroid* GiantAstroid3 = new Astroid(ship->body->frame.getPosition()+glm::vec3(15, 3, 250),7);
+   GiantAstroid3->material = mat;
+   GiantAstroid3->vertexData.setToOneColor(GiantAstroid3->material.getDiffuse().r, GiantAstroid3->material.getDiffuse().g, GiantAstroid3->material.getDiffuse().b);
+   GiantAstroid3->generateVBO();
+   objects["GiantAstroid3"] = GiantAstroid3;
+
+    Astroid* GiantAstroid4 = new Astroid(ship->body->frame.getPosition()+glm::vec3(2, 5, 750),10);
+   GiantAstroid4->material = mat;
+   GiantAstroid4->vertexData.setToOneColor(GiantAstroid4->material.getDiffuse().r, GiantAstroid4->material.getDiffuse().g, GiantAstroid4->material.getDiffuse().b);
+   GiantAstroid4->generateVBO();
+   objects["GiantAstroid4"] = GiantAstroid4;
 }
 
 void MyWorld::setupShaders()
