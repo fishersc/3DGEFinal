@@ -36,6 +36,8 @@ public:
    int count;
    int rateCount;
 
+   void createAstroids();
+
    
 
 protected:
