@@ -26,7 +26,7 @@ WindowsOGLWindow::~WindowsOGLWindow(void)
 {
 	if(hdc != NULL){
 		wglMakeCurrent(hdc, 0); // Remove the rendering context from the device context
-		wglDeleteContext(hrc);  // Delete our rendering context
+//		wglDeleteContext(hrc);  // Delete our rendering context
 		ReleaseDC(hWnd, hdc);   // Release the device context from the window
 	}
    ShowCursor(TRUE);
