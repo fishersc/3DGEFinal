@@ -44,6 +44,7 @@ Astroid::Astroid(const glm::vec3& pos,int size)
    speedZ = 60;
    rotation = rand() % 70+30;
     rotation2 = rand() % 70+30;
+	this->size = size;
 }
 
 
@@ -65,7 +66,7 @@ void Astroid::update()
 
 void Astroid::animate(float durationMS)
 {
-	/*
+/*	
    angleY += (30 * durationMS/1000);
    if(angleY > 360) angleY -= 360;
    angleZ += (speedZ * durationMS/1000);
@@ -75,12 +76,12 @@ void Astroid::animate(float durationMS)
    else if(angleZ < -45){
       speedZ = 60;
    }
-
-   
+   */
+  
    if(base->behavior){
       base->behavior->animate(durationMS);
    }
-   */
+   
 } 
 
 void Astroid::setTransformMatrixUniform(GLuint unif)
@@ -169,4 +170,50 @@ void Astroid::render()
       frameStack.pop();
    }
    frameStack.pop();
+}
+
+BoundZ Astroid::checkSector()
+{
+	int sector;
+
+
+	BoundZ bound;
+	if(base->frame.getPosition().z <= 1000 && base->frame.getPosition().z >= 500)
+	{
+		sector = 0;
+	}
+	else if(base->frame.getPosition().z < 500 && base->frame.getPosition().z >= 0)
+	{
+		sector = 1;
+	}
+	else if(base->frame.getPosition().z < 0 && base->frame.getPosition().z >= -500)
+	{
+		sector = 2;
+	}
+	else if(base->frame.getPosition().z < -500 && base->frame.getPosition().z >= -1000)
+	{
+		sector = 3;
+	}
+
+	 switch(sector)
+	{
+		case 0:
+			bound.maxZ = 500;
+			bound.minZ = 1000;
+			break;
+		case 1:
+			bound.maxZ = 0;
+			bound.minZ = 500;
+			break;
+		case 2:
+			bound.maxZ = -500;
+			bound.minZ = 0;
+			break;
+		case 3:
+			bound.maxZ = -1000;
+			bound.minZ = -500;
+			break;
+   }
+
+	 return bound;
 }

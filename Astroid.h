@@ -5,6 +5,11 @@
 #endif
 #include "Cuboid.h"
 
+struct BoundZ{
+	float maxZ;
+	float minZ;
+};
+
 class Astroid :
 	public OGLCompositeGameObject
 {
@@ -14,6 +19,8 @@ class Astroid :
    Cuboid* turret;
      Cuboid* ast;
 	   Cuboid* roid;
+
+	   int size;
 private:
    float angleY;
    float angleZ, speedZ;
@@ -30,5 +37,6 @@ public:
    void setSpecularUniform(GLuint unif);
    void setShininessUniform(GLuint unif);
    void setShader(GLuint shader);
+   BoundZ checkSector();
 };
 
